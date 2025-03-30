@@ -47,6 +47,21 @@ namespace MagicVilla_VillaAPI.Controllers
 
         public ActionResult<VillaDTO> CreateVilla([FromBody]VillaDTO villaDTO)
         {
+            //if (!ModelState.IsValid)    //no need of this if you have included [ApiController] and note: [ApiController] is hit before this actionmethod (for validation).
+            //{
+            //    return BadRequest(ModelState);
+            //}
+
+
+            //custom validation
+            if(VillaStore.villaList.FirstOrDefault(u=>u.Name.ToLower()== villaDTO.Name.ToLower()) != null)
+            {
+                ModelState.AddModelError("CustomError","Villa already exists!");
+                return BadRequest(ModelState);
+            }
+
+
+
             if (villaDTO == null)
             {
                 return BadRequest(villaDTO);
